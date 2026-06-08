@@ -1,7 +1,7 @@
 from flask import render_template,redirect,url_for,Blueprint,request,flash,session
 import models
 import db
-auth=Blueprint(__name__)
+auth=Blueprint("auth",__name__)
 
 @auth.route("/register",methods=["POST","GET"])
 def register():
