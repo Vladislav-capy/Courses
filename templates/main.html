@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Courses</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    
+    <main class="page">
+        <section class="panel panel-wide" aria-labelledby="main-title">
+            <p class="eyebrow">Courses</p>
+            <h1 id="main-title">Your course space</h1>
+            <p class="lead">
+                A clean starting page for your learning project. Course content can be added here later.
+            </p>
+
+            <div class="actions">
+                <a class="button" href="{{ url_for('auth.login') }}">Login</a>
+                <a class="button button-secondary" href="{{ url_for('auth.register') }}">Register</a>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
