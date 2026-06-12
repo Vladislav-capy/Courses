@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+</head>
+<body>
+    <form action="{{url_for('game.add_game')}}" method="post">
+        <h2>Добавить игру</h2>
+        {%if error%}
+        {{error}}
+        {%endif%}
+        <input type="text" name="book_name" placeholder="Название игры">
+        <input type="text" name="author" placeholder="Жанр">
+        <input type="number" name="rating" placeholder="Оценка">
+        <button>Добавить</button>
+        </form>
+        <hr>
+        <h2>Мои игры</h2>
+        {%if game%}
+        {%for i in game%}
+        <p></p>
+        <h3>{{i.title}}</h3><p></p>
+        Жанр:{{i.genre}}<p></p>
+        Оценка:{{i.rating}}/10
+        {%endfor%}
+        {%endif%}
+        
+</body>
+</html>
