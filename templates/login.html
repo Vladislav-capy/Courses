@@ -1,18 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login | Courses</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    {%for i in get_flashed_messages()%}
-    {{i}}
-    {%endfor%}
-    <form action="{{url_for('auth.login')}}" method="post">
-        <input type="text" name="login" placeholder="Enter login">
-        <input type="password" name="password" placeholder="Enter password">
-        <button>Login</button>
-    </form>
+    <main class="page">
+        <section class="panel" aria-labelledby="login-title">
+            <p class="eyebrow">Courses</p>
+            <h1 id="login-title">Welcome back</h1>
+            <p class="lead">Log in to continue working with your courses.</p>
+
+            {% set messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="flash-list" role="status">
+                {% for i in messages %}
+                <div class="flash">{{ i }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form class="form" action="{{ url_for('auth.login') }}" method="post">
+                <div class="field">
+                    <label for="login">Login</label>
+                    <input id="login" type="text" name="login" placeholder="Enter login">
+                </div>
+
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password" placeholder="Enter password">
+                </div>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p class="switch-link">
+                No account yet?
+                <a href="{{ url_for('auth.register') }}">Register</a>
+            </p>
+        </section>
+    </main>
 </body>
 </html>

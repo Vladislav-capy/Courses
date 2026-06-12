@@ -1,20 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Register | Courses</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    {%for i in get_flashed_messages()%}
-    {{i}}
-    {%endfor%}
-    <form action="{{url_for('auth.register')}}" method="post">
-        <input type="text" name="login" placeholder="Enter username">
-        <input type="text" name="email" placeholder="Enter email">
-        <input type="password" name="password" placeholder="Enter password">
-        <input type="password" name="password2" placeholder="Confirm password">
-        <button>Register</button>
-    </form>
+    <main class="page">
+        <section class="panel" aria-labelledby="register-title">
+            <p class="eyebrow">Courses</p>
+            <h1 id="register-title">Create account</h1>
+            <p class="lead">Register to save your profile and enter the platform.</p>
+
+            {% set messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="flash-list" role="status">
+                {% for i in messages %}
+                <div class="flash">{{ i }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form class="form" action="{{ url_for('auth.register') }}" method="post">
+                <div class="field">
+                    <label for="login">Username</label>
+                    <input id="login" type="text" name="login" placeholder="Enter username">
+                </div>
+
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" name="email" placeholder="Enter email">
+                </div>
+
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password" placeholder="Enter password">
+                </div>
+
+                <div class="field">
+                    <label for="password2">Confirm password</label>
+                    <input id="password2" type="password" name="password2" placeholder="Confirm password">
+                </div>
+
+                <button type="submit">Register</button>
+            </form>
+
+            <p class="switch-link">
+                Already registered?
+                <a href="{{ url_for('auth.login') }}">Login</a>
+            </p>
+        </section>
+    </main>
 </body>
 </html>
