@@ -17,8 +17,10 @@
         {%else%}
             <p>No courses yet!</p>
         {%endif%}
-        <form action="">
-            
+        <form action="{{url_for('course.add_course')}}" method="post" enctype="multipart/form-data">
+        <input type="text" name="name"><p></p>
+        <input type="text" name="description"><p></p>
+        <input type="file" name="image">
         <button>Add course</button>    
         </form>
         

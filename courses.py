@@ -21,6 +21,15 @@ def add_course():
     new_course=models.Courses(name=name,description=description,image_name=image_name)
     db.db.session.add(new_course)
     db.db.session.commit()
-    return redirect("courses.get_courses")
+    return redirect(url_for("course.get_courses"))
 
-        
+@course.route("/delete_course/<int:course_id>",methods=["DELETE"])
+def delete_course(course_id):
+    course=models.Courses.query.filter_by(id=course_id).first()
+    if not course:
+        flash("No such course")
+        return redirect(url_for("course.get_courses"))
+    else:
+        db.db.session.delete(course)
+        db.db.session.commit()
+        return redirect(url_for("course.get_courses"))
