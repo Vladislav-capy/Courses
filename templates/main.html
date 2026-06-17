@@ -3,27 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses</title>
+    <title>VolCourses</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <main class="page">
-        {%if courses%}
-            {%for i in courses%}
-                {{i.name}}
-                {{i.description}}
-                <img src="{{url_for('views.get_image',img_name=i.image_name)}}" alt="">
-            {%endfor%}
-        {%else%}
-            <p>No courses yet!</p>
-        {%endif%}
-        <form action="{{url_for('course.add_course')}}" method="post" enctype="multipart/form-data">
-        <input type="text" name="name"><p></p>
-        <input type="text" name="description"><p></p>
-        <input type="file" name="image">
-        <button>Add course</button>    
-        </form>
-        
+    {% set course_items = courses | default([]) %}
+
+    <main class="app-page">
+        <header class="topbar">
+            <a class="brand" href="{{ url_for('course.get_courses') }}" aria-label="VolCourses home">
+                <span class="brand-mark">V</span>
+                <span>VolCourses</span>
+            </a>
+
+            <div class="topbar-actions">
+                <a class="button button-new button-small" href="#new-course" aria-haspopup="dialog">
+                    <span aria-hidden="true">+</span>
+                    <span>New course</span>
+                </a>
+
+                <a class="button button-secondary button-small" href="{{ url_for('auth.login') }}">Logout</a>
+            </div>
+        </header>
+
+        <section class="course-section">
+            <div class="search-shell">
+                <label class="search-field" for="course-search">
+                    <span>Search courses</span>
+                    <input id="course-search" type="search" placeholder="Search by name or discription" autocomplete="off">
+                </label>
+            </div>
+
+            {% if course_items %}
+            <section class="courses-grid" id="course-list" aria-label="Course list">
+                <!--
+                ВЛАДИСЛАВ, ВОТ HTML ОБРАЗЕЦ ДЛЯ  1го КУРСА. Удали 39 и 51 строки!
+                <article class="course-card">
+                    <div class="course-image">
+                        <img src="/image/default.png" alt="Course name">
+                    </div>
+
+                    <div class="course-content">
+                        <h2>Course name</h2>
+                        <p>Course description</p>
+                    </div>
+                </article>
+                -->
+
+            </section>
+
+            <section class="empty-state search-empty" id="search-empty" hidden>
+                <div class="empty-mark">?</div>
+                <h2>No matches</h2>
+                <p>Try another course name or description.</p>
+            </section>
+            {% else %}
+            <section class="empty-state">
+                <div class="empty-mark">+</div>
+                <h2>No courses yet</h2>
+                <p>Add your first course or u'll be banned)</p>
+                <a class="button button-new" href="#new-course" aria-haspopup="dialog">
+                    <span aria-hidden="true">+</span>
+                    <span>New course</span>
+                </a>
+            </section>
+            {% endif %}
+        </section>
     </main>
+
+    <div id="new-course" class="modal" role="dialog" aria-modal="true" aria-labelledby="new-course-title">
+        <a class="modal-backdrop" href="#" aria-label="Close form"></a>
+
+        <section class="modal-panel">
+            <div class="modal-header">
+                <div>
+                    <p class="eyebrow">Create</p>
+                    <h2 id="new-course-title">New course</h2>
+                </div>
+
+                <a class="icon-button" href="#" aria-label="Close form">&times;</a>
+            </div>
+
+            <form class="form" action="{{ url_for('course.add_course') }}" method="post" enctype="multipart/form-data">
+                <div class="field">
+                    <label for="course-name">Name</label>
+                    <input id="course-name" type="text" name="name" placeholder="Course name" maxlength="30" required>
+                </div>
+
+                <div class="field">
+                    <label for="course-description">Description</label>
+                    <input id="course-description" type="text" name="description" placeholder="Short description" maxlength="50">
+                </div>
+
+                <div class="field">
+                    <label for="course-image">Cover image</label>
+                    <input id="course-image" type="file" name="image" accept="image/*">
+                </div>
+
+                <div class="modal-actions">
+                    <a class="button button-secondary" href="#">Cancel</a>
+                    <button type="submit">Create course</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        const courseSearch = document.querySelector("#course-search");
+        const courseCards = [...document.querySelectorAll(".course-card")];
+        const searchEmpty = document.querySelector("#search-empty");
+
+        if (courseSearch) {
+            courseSearch.addEventListener("input", () => {
+                const query = courseSearch.value.trim().toLowerCase();
+                let visibleCards = 0;
+
+                courseCards.forEach((card) => {
+                    const matches = card.textContent.toLowerCase().includes(query);
+                    card.hidden = !matches;
+                    visibleCards += matches ? 1 : 0;
+                });
+
+                if (searchEmpty) {
+                    searchEmpty.hidden = visibleCards > 0;
+                }
+            });
+        }
+    </script>
 </body>
 </html>
