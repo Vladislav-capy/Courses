@@ -5,7 +5,10 @@ views=Blueprint("views",__name__)
 
 @views.route("/main",methods=["GET",])
 def main():
-    return render_template("main.html")
+    if "login" not in session:
+        return redirect(url_for("auth.register"))
+    else:
+        return redirect(url_for("course.get_courses"))
 
 @views.route("/image/<string:img_name>",methods=["GET",])
 def get_image(img_name):
