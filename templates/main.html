@@ -35,26 +35,22 @@
             </div>
 
             {% if course_items %}
-            {%if courses%}
-                    {%for i in courses%}
             <section class="courses-grid" id="course-list" aria-label="Course list">
+                {% for i in course_items %}
                 <article class="course-card">
                     <div class="course-image">
-                        <img src="/image/default.png" alt="Course name">
+                        <img src="/image/{{ i.image_name or 'default.png' }}" alt="{{ i.name }}">
                     </div>
-                    
-                    <a href="{{url_for('course.coursee',course_id=i.id)}}">
-                    <div class="course-content">
-                        {{i.name}}<p></p>
-                        {{i.description}}
-                    </div>
-                    </a>
-                    
-                </article>
 
+                    <a class="course-link" href="{{ url_for('course.coursee', course_id=i.id) }}">
+                        <div class="course-content">
+                            <h2>{{ i.name }}</h2>
+                            <p>{{ i.description }}</p>
+                        </div>
+                    </a>
+                </article>
+                {% endfor %}
             </section>
-            {%endfor%}
-            {%endif%}
 
             <section class="empty-state search-empty" id="search-empty" hidden>
                 <div class="empty-mark">?</div>

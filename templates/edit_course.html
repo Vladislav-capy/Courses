@@ -1,20 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Course</title>
+    <title>Edit Course | VolCourses</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    
-    <textarea name="info">
+    <main class="app-page">
+        <header class="topbar">
+            <a class="brand" href="{{ url_for('course.get_courses') }}" aria-label="VolCourses home">
+                <span class="brand-mark">V</span>
+                <span>VolCourses</span>
+            </a>
 
-    </textarea>
-    <button id="add">New question</button>
-    <div id="questions">
-        <input type="text" name="question1">
-        <input type="text" name="answer1">
-    </div>
-<script src="{{url_for('static',filename='JS/edit_course.js')}}"></script>
+            <div class="topbar-actions">
+                <button id="save-edit" class="button-small" type="button">Save</button>
+                <a class="button button-secondary button-small" href="{{ url_for('course.get_courses') }}">Courses</a>
+            </div>
+        </header>
+
+        <section class="editor-shell" data-course-id="{{ info.id if info else 'new' }}" aria-labelledby="edit-course-title">
+            <div class="editor-head">
+                <p class="eyebrow">Editor</p>
+                <h1 id="edit-course-title">{{ info.name if info else 'Edit course' }}</h1>
+                {% if info and info.description %}
+                <p class="lead">{{ info.description }}</p>
+                {% endif %}
+                <p id="save-state" class="save-state" role="status"></p>
+            </div>
+
+            <section class="editor-layout">
+                <div class="editor-panel">
+                    <div class="field">
+                        <label for="course-info">Course info</label>
+                        <textarea id="course-info" name="info" placeholder="Write course details"></textarea>
+                    </div>
+                </div>
+
+                <div class="editor-panel">
+                    <div class="questions-head">
+                        <div>
+                            <p class="eyebrow">Voprosiki</p>
+                            <h2>Questions</h2>
+                        </div>
+                        <button id="add" class="button-small" type="button">New question</button>
+                    </div>
+
+                    <div id="questions" class="questions-list">
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='JS/edit_course.js') }}"></script>
 </body>
 </html>

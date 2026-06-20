@@ -13,7 +13,7 @@ def add_course():
     name=request.form.get("name")
     description=request.form.get("description")
     image=request.files.get("image")
-    if image==None:
+    if image==None or not image.filename:
         image_name="default.png"
     else:
         image_name=uuid.uuid4().hex
