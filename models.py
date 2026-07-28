@@ -12,3 +12,10 @@ class Courses(db.Model):
     name=db.Column(db.String(30))
     description=db.Column(db.String(50))
     image_name=db.Column(db.String(100))
+    theory_text=db.Column(db.Text)
+
+class Question(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    course_id=db.Column(db.Integer)
+    question=db.Column(db.Text)
+    answer=db.Column(db.String(100))

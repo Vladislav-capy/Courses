@@ -50,7 +50,7 @@ def login():
         if password==None or password.strip()=="":
             flash("Enter password")
             return redirect(url_for("auth.login"))
-        user=models.User.query.filter_by(login=login,password=password)
+        user=models.User.query.filter_by(login=login,password=password).first()
         if not user:
             flash("Wrong login or password")
             return redirect(url_for("auth.login"))

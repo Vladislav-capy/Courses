@@ -97,21 +97,30 @@ if (questionsList && addButton) {
         setSaveState("Unsaved changes");
     });
 }
-
-if (questionsList && saveButton) {
-    saveButton.addEventListener("click", function () {
-        const data = {
-            info: courseInfo ? courseInfo.value : "",
-            questions: getRowsData()
-        };
-
-        localStorage.setItem(storageKey, JSON.stringify(data));
-        setSaveState("Saved");
-    });
-}
-
 document.addEventListener("input", function (event) {
     if (event.target.closest(".editor-shell")) {
         setSaveState("Unsaved changes");
     }
 });
+saveButton.addEventListener("click", async ()=>{
+    let questions2=[]
+    for(let i=1;i<=questions;i+=1){
+        let question=document.getElementById("question"+i)
+        let answer=document.getElementById("answer"+i)
+        if(question){
+            questions2.push([question.value,answer.value])
+        }
+    }
+    let course={
+        "theory_text":courseInfo.value,
+        "questions":questions2,
+        "course_id":editorShell.dataset.courseId
+    }
+    let serverResponse=await fetch("/save",{
+        method:"POST",
+        headers:{
+            "content-type":"application/json"
+        },
+        body:JSON.stringify(course)
+    })
+})

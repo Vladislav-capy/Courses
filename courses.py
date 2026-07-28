@@ -51,3 +51,20 @@ def edit_course(course_id):
         return redirect(url_for("course.get_courses"))
     else:
         return render_template("edit_course.html",info=course)
+
+@course.route("/save",methods=["POST",])
+def save():
+    info=request.get_json()
+    theory_text=info["theory_text"]
+    questions=info["questions"]
+    course=models.Courses.query.filter_by(id=info["course_id"]).first()
+    course.theory_text=theory_text
+    db.db.session.commit()
+    questions2=models.Question.query.filter_by(course_id=info["course_id"]).all()
+    for i in questions2:
+        db.db.session.delete(i)
+    for i in questions:
+        new_question=models.Question(course_id=info["course_id"],question=i[0],answer=i[1])
+        db.db.session.add(new_question)
+    db.db.session.commit()
+    return "ok"
