@@ -1,6 +1,6 @@
 from flask import render_template,redirect,url_for,Blueprint,request,flash,session
 import models
-import db
+import db,auth
 import uuid
 course=Blueprint("course",__name__)
 
@@ -36,12 +36,16 @@ def delete_course(course_id):
     
 @course.route("/course/<int:course_id>",methods=["GET",])
 def coursee(course_id):
-    course=models.Courses.query.filter_by(id=course_id).first()
-    if not course:
-        flash("No such course")
-        return redirect(url_for("course.get_courses"))
+    if "login" not in session:
+        return redirect(url_for("auth.register"))
     else:
-        return render_template("course_page.html",info=course)
+        course=models.Courses.query.filter_by(id=course_id).first()
+        question=models.Question.query.filter_by(course_id=course_id).all()
+        if not course:
+            flash("No such course")
+            return redirect(url_for("course.get_courses"))
+        else:
+            return render_template("course_page.html",info=course,quest=question)
     
 @course.route("/edit_course/<int:course_id>",methods=["GET",])
 def edit_course(course_id):
@@ -67,4 +71,11 @@ def save():
         new_question=models.Question(course_id=info["course_id"],question=i[0],answer=i[1])
         db.db.session.add(new_question)
     db.db.session.commit()
+    return "ok"
+
+@course.route("/check_answers/<int:course_id>",methods=["POST",])
+def check_answers(courseid):
+    answers=request.get_json()
+    correct_answers=models.Question.query.filter_by(course_id=courseid).all()
+    
     return "ok"

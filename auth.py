@@ -57,3 +57,8 @@ def login():
         else:
             session["login"]=login
             return redirect(url_for("views.main"))
+
+@auth.route("/logout",methods=["GET"])
+def logout():
+    session.clear()
+    return redirect(url_for("auth.register"))

@@ -3,12 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/course.css') }}">
     <title>Course</title>
 </head>
 <body>
     {%if info%}
-    {{info.text}}
-    {{info.question}}
+    {{info.theory_text}}<p></p>
     {%endif%}
+    {%if quest%}
+    {%for i in quest%}
+    {{i.question}}
+    <input type="text" class="ans"><p></p>
+    {%endfor%}
+    {%endif%}
+    <button type="button" id="submit">Submit</button>
+    <script src="{{url_for('static',filename='JS/course.js')   }}"></script>
 </body>
 </html>
